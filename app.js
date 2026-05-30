@@ -5,6 +5,7 @@ if(process.env.NODE_ENV!="production"){
 
 const express = require("express");
 const app = express();
+app.set("trust proxy", 1);
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
@@ -60,11 +61,14 @@ let sessionOptions={
   store,
   secret:process.env.SECRET,
   resave:false,
-  saveUninitialized:true,
-  cookie:{
-    expires:Date.now()+7*24*60*60*1000,
-    maxAge:7*24*60*60*1000
-  }
+  saveUninitialized:false,
+  cookie: {
+  expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  httpOnly: true,
+  secure: true,
+  sameSite: "none"
+}
 };
 
 
