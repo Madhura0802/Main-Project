@@ -65,9 +65,6 @@ let sessionOptions={
   cookie: {
   expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   maxAge: 7 * 24 * 60 * 60 * 1000,
-  httpOnly: true,
-  secure: true,
-  sameSite: "none"
 }
 };
 
@@ -79,6 +76,12 @@ app.use(flash());
 app.use(passport.initialize());
 
 app.use(passport.session());
+
+app.use((req, res, next) => {
+  console.log("req.session.passport:", req.session.passport);
+  console.log("req.user:", req.user);
+  next();
+});
 
 passport.use(new LocalStrategy(User.authenticate()));
 
@@ -95,6 +98,9 @@ app.use((req,res,next)=>{
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/",userRouter);
+
+
+
 
 // 404 handler
 app.use((req, res, next) => {
