@@ -54,11 +54,11 @@
                 </div>
                  <div class="navbar-nav ms-auto">
                       <a class="nav-link" href="/listings/new">Airbnb Your home</a>
-                    <% if(!currUser) {%>
+                    <% if(!currentUser) {%>
                     <a class="nav-link" href="/signUp"><b>SignUp</b></a>
                     <a class="nav-link" href="/login"><b>Login</b></a>
                     <%}%>
-                     <% if(currUser) {%>
+                     <% if(currentUser) {%>
                           <a class="nav-link" href="/logout"><b>Logout</b></a>
                     <%}%>
                   

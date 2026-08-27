@@ -73,7 +73,7 @@ module.exports.updateListing = async (req, res) => {
 
     let list = await Listing.findById(id);
 
-    if (!list.owner._id.equals(res.locals.currUser._id)) {
+    if (!list.owner._id.equals(res.locals.currentUser._id)) {
 
         req.flash("error", "You don't have permission to edit");
 
