@@ -9,7 +9,11 @@ app.set("trust proxy", 1);
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-const db_URL=process.env.ATLASDB_URL;
+// const db_URL=process.env.ATLASDB_URL;
+const db_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.ATLASDB_URL
+    : "mongodb://127.0.0.1:27017/wanderlust";
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
@@ -27,7 +31,7 @@ const { error } = require("console");
 // =============================================================================================
 
 async function main() {
-  await mongoose.connect(db_URL);
+ await mongoose.connect(db_URL);
 }
 
 main()
@@ -46,7 +50,7 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
 const store = MongoStore.create({
-  mongoUrl: db_URL,
+  mongoUrl: MONGO_URL,
   crypto: {
     secret: process.env.SECRET,
   },
@@ -92,7 +96,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error");
-  res.locals.currUser=req.user;
+ res.locals.currentUser = req.user;
   next();
 })
 app.use("/listings", listingRouter);
